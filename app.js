@@ -1,3 +1,5 @@
+const { createStore } = require('redux');
+
 const defaultState = {
   courses: [
     {
@@ -15,8 +17,17 @@ const defaultState = {
   ]
 };
 
+function reducer(state, action) {
+  return state;
+}
+
+const store = createStore(reducer, defaultState);
+
 function addView(viewFunc) {
   viewFunc(defaultState);
+  store.subscribe(() => {
+    viewFunc(store.getState());
+  });
 }
 
 addView((state) => {
@@ -27,6 +38,17 @@ addView((state) => {
   console.log(`The latest course in the library: ${state.courses[state.courses.length -1].name}`);
 });
 
+// this does not work, states needs to be dispatched instead:
+// defaultState.courses.push({
+//    name: 'This is the new course',
+//     topic: 'Some topic'
+// });
 
-
+store.dispatch({
+    type: 'ADD_COURSE',
+    course: {
+        name: 'This is the new course',
+        topic: 'Some topic'
+    }
+});
 
