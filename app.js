@@ -18,7 +18,16 @@ const defaultState = {
 };
 
 function reducer(state, action) {
-  return state;
+  switch (action.type) {
+      case 'ADD_COURSE':
+        return Object.assign({}, state, {
+            // this will take all the courses from the existing collection
+            // (using spread operator) + it will add the new one.
+          courses: [...state.courses, action.course]
+        });
+    default:
+      return state;
+  }
 }
 
 const store = createStore(reducer, defaultState);
